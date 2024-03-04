@@ -13,3 +13,9 @@ console.log(num);
 // Boolean 
 var isTrue = true;
 console.log(isTrue);
+// Any
+var avenger;
+function getThor() {
+    return "Thor";
+}
+avenger = getThor();

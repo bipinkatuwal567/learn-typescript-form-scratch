@@ -14,4 +14,13 @@ console.log(num);
 let isTrue = true;
 console.log(isTrue);
 
+// Any
+let avenger;
+
+function getThor(){
+    return "Thor";
+}
+
+avenger = getThor();
+
 export {}
