@@ -54,4 +54,4 @@ myBands.data = ["Neil Young", "Led Zep"];
 console.log(myBands.data);
 myBands.data = [...myBands.data, "ZZ Top"];
 console.log(myBands.data);
-myBands.data = ["Ven Hallen", 12];
+// myBands.data = ["Ven Hallen", 12]
