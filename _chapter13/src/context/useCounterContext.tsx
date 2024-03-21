@@ -1,8 +1,9 @@
 import {
   ChangeEvent,
   ReactElement,
-  ReactNode,
   createContext,
+  useCallback,
+  useContext,
   useReducer,
 } from "react";
 
@@ -11,7 +12,7 @@ type initStateType = {
   text: string;
 };
 
-const initState: initStateType = { count: 0, text: "" };
+export const initState: initStateType = { count: 0, text: "" };
 
 const enum REDUCER_ACTION_TYPE {
   INCREMENT,
@@ -43,30 +44,30 @@ const reducer = (
 const useCounterContext = (initState: initStateType) => {
   const [state, reducers] = useReducer(reducer, initState);
 
-  function increament() {
+  const increment = useCallback(() => {
     reducers({ type: REDUCER_ACTION_TYPE.INCREMENT });
-  }
+  }, []);
 
-  function decreament() {
+  const decrement = useCallback(() => {
     reducers({ type: REDUCER_ACTION_TYPE.DECREMENT });
-  }
+  }, []);
 
-  function textChange(e: ChangeEvent<HTMLInputElement>) {
+  const textChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     reducers({
       type: REDUCER_ACTION_TYPE.NEW_INPUT,
       payload: e.target.value,
     });
-  }
+  }, []);
 
-  return { state, increament, decreament, textChange };
+  return { state, increment, decrement, textChange };
 };
 
 type UseCounterContextType = ReturnType<typeof useCounterContext>;
 
 const initContextState: UseCounterContextType = {
   state: initState,
-  increament: () => {},
-  decreament: () => {},
+  increment: () => {},
+  decrement: () => {},
   textChange: (e: ChangeEvent<HTMLInputElement>) => {},
 };
 
@@ -87,3 +88,26 @@ export const ContextProvider = ({
     </CounterContext.Provider>
   );
 };
+
+type useCounterHooktype = {
+  count: number,
+  increment: () => void,
+  decrement: () => void,
+}
+
+export const useCounter = (): useCounterHooktype => {
+  const {state: {count}, increment, decrement} = useContext(CounterContext);
+
+  return {count, increment, decrement}
+}
+
+type useCounterTextHookType = {
+  text: string,
+  textChange: (e: ChangeEvent<HTMLInputElement>) => void
+}
+
+export const useCounterText = (): useCounterTextHookType => {
+  const {state: {text}, textChange} = useContext(CounterContext);
+
+  return {text, textChange}
+}
